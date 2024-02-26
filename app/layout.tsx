@@ -8,7 +8,7 @@ import ToasterProvider from "./providers/ToasterProvider";
 const font = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Rent revolution",
+  title: "Rentomation",
   description: "Rental management system",
 };
 
