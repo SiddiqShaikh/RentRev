@@ -37,6 +37,7 @@ const Input: React.FC<InputProps> = ({
         {...register(id, { required })}
         placeholder=" "
         type={type}
+        autoComplete="new-password"
         className={`
         peer
         w-full
