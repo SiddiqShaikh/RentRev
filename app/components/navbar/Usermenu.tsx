@@ -1,29 +1,39 @@
 "use client";
 
+import { useCallback, useState } from "react";
+import { signOut } from "next-auth/react";
+
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
-import { SafeUser } from "@/app/types";
-import { signOut } from "next-auth/react";
-import { useCallback, useState } from "react";
+import useRentModal from "@/app/hooks/useRentModal";
+
 import { AiOutlineMenu } from "react-icons/ai";
+
 import Avatar from "../Avatar";
 import MenuItem from "./Menuitem";
+
+import { SafeUser } from "@/app/types";
 interface UserMenuProps {
   currentUser?: SafeUser | null;
 }
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+  const rentModal = useRentModal();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
+  const rent = useCallback(() => {
+    if (!currentUser) return loginModal.onOpen();
+    rentModal.onOpen();
+  }, [loginModal, currentUser, rentModal]);
   return (
     <div className="relative">
       <div className="flex items-center flex-row gap-3">
         <div
-          onClick={() => console.log("Hello")}
+          onClick={rent}
           className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
         >
           Rentomation
@@ -43,13 +53,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem label="My trips" onClick={()=>{}} />
-                <MenuItem label="My favorites" onClick={()=>{}} />
-                <MenuItem label="My reservations" onClick={()=>{}} />
-                <MenuItem label="My properties" onClick={()=>{}} />
-                <MenuItem label="Rentomation my home" onClick={()=>{}} />
-              <hr/>
-                <MenuItem label="Logout" onClick={()=>signOut()} />
+                <MenuItem label="My trips" onClick={() => {}} />
+                <MenuItem label="My favorites" onClick={() => {}} />
+                <MenuItem label="My reservations" onClick={() => {}} />
+                <MenuItem label="My properties" onClick={() => {}} />
+                <MenuItem label="Rentomation my home" onClick={rentModal.onOpen} />
+                <hr />
+                <MenuItem label="Logout" onClick={() => signOut()} />
               </>
             ) : (
               <>
